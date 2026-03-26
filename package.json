@@ -2,7 +2,7 @@
   "name": "mathlive-sync",
   "displayName": "MathLive Markdown Sync",
   "description": "A real-time, immersive MathLive LaTeX preview and editor for Markdown.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "okok909090",
   "license": "MIT",
   "repository": {
