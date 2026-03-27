@@ -2,7 +2,7 @@
   "name": "latex-markdown-preview",
   "displayName": "Academic Paper Panorama (论文全景预览)",
   "description": "实时渲染、丝滑缩放的 Markdown & LaTeX 学术论文全景预览与编辑工具。",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "okok909090",
   "icon": "icon.png",
   "license": "MIT",
