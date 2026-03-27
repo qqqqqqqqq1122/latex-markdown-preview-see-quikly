@@ -1,0 +1,351 @@
+    \documentclass[12pt,a4paper]{article}
+    \usepackage[utf8]{inputenc}
+    \usepackage{amsmath,amssymb}
+    \usepackage{graphicx}
+    \usepackage{booktabs}
+    \usepackage{multirow}
+    \usepackage{hyperref}
+    \usepackage{geometry}
+    \geometry{a4paper, margin=1in}
+    \usepackage{float}
+    \usepackage{longtable}
+    \usepackage{array}
+
+    \title{Measuring systemic risk in China: A new hybrid approach incorporating ensemble learning and risk spillover networks}
+    \author{
+        Da Huo\textsuperscript{a}, 
+        Yongdong Shi\textsuperscript{b,*}, 
+        Chao Wang\textsuperscript{c}, 
+        Lihan Wang\textsuperscript{a}, 
+        Weize Xing\textsuperscript{a}, 
+        Mo Yang\textsuperscript{d}, 
+        Jingjing Zhao\textsuperscript{a}
+    }
+    \date{}
+
+    \begin{document}
+
+    \maketitle
+
+    \begin{center}
+        \textsuperscript{a} School of FinTech, Dongbei University of Finance and Economics, China \\
+        \textsuperscript{b} School of FinTech, Research Center of Applied Finance and School of Finance, Dongbei University of Finance and Economics, China \\
+        \textsuperscript{c} College of International Economics and Trade, Dongbei University of Finance and Economics, China \\
+        \textsuperscript{d} School of Finance, Dongbei University of Finance and Economics, China \\
+    \end{center}
+
+    \begin{center}
+        \textbf{ABSTRACT}
+    \end{center}
+
+    To address the limitations of traditional systemic risk indices in measuring nonlinearity and network interdependence, we introduce ESRISK, a novel systemic risk measure that incorporates ensemble learning and risk spillover networks. Our approach can effectively analyze the complex nonlinearity in high-dimensional data, enabling more accurate quantification of systemic risk in China's financial system. Comprehensive evaluations reveal that ESRISK outperforms prevailing systemic risk measures, particularly in predictability, accuracy in measuring systemic risk, and effectiveness in early warning detection of systemic events. Moreover, ESRISK demonstrates superior predictive power for macroeconomic downturns. Our findings highlight the importance of applying machine learning methods and considering inter-institutional spillovers when measuring systemic risk in China's financial ecosystem.
+
+    \textbf{JEL classification:} G21, G28, C5
+
+    \textbf{Keywords:} Systemic risk measure, Ensemble learning, SRISK, Marginal expected shortfall, Risk spillover index
+
+    \section{Introduction}
+
+    Since the 2008 global financial crisis, great attention has been drawn to systemic risk measures, including SRISK, CES, CoVaR, and CATFIN (Brownlees and Engle, 2017; Banulescu and Dumitrescu, 2015; Adrian and Brunnermeier, 2016; Allen et al., 2012). With additive properties enabling the identification of systemically important institutions (Acharya et al., 2012; Rodriguez-Moreno and Pena, 2013) and incorporation of micro-level risk characteristics, SRISK has wide application since its introduction, including measuring systemic risk in China (e.g., Derbali, 2016; Zhou et al., 2020). Prevailing systemic risk measures are primarily based on traditional econometric models, which rely on fixed functional forms and impose strict distributional assumptions. When the financial system is vulnerable, even small exogenous shocks can be amplified, leading to severe recessions or crises (Brunnermeier and Sannikov, 2014). This phenomenon is widely recognized as the nonlinearities of systemic risk (Bisias et al., 2012; Giglio et al., 2016; Gertler et al., 2020). These underlying nonlinearities make it challenging for traditional measures to capture systemic risk effectively and accurately. Meanwhile, systemic risk is influenced not only by factors within financial institutions and markets but also by external macroeconomic conditions, such as regulatory policies and economic growth fluctuations. However, incorporating high-dimensional variables into traditional econometric models may result in the "curse of dimensionality".
+
+    Machine learning has been widely applied in financial research such as return prediction and credit default early warning (e.g., Gu et al., 2020; Fuster et al., 2022). Machine learning uses data-driven guidance to identify optimal models with flexible functional forms (Breiman, 2001), and reduces computational burdens through algorithmic optimization, addressing the challenges faced by traditional models when handling large datasets and numerous parameters (Kelly and Xiu, 2023). These properties make machine learning compelling in uncovering complex nonlinear relationships between variables and improving predictive accuracy. As suggested by the "No Free Lunch Theorem" (Wolpert, 1996), no single machine learning algorithm can consistently outperform others across all datasets. By combining multiple machine learning algorithms, ensemble learning leverages their respective strengths in recognizing data structures, thereby enhancing the effectiveness and stability of model predictions (Hansen and Salamon, 1990; Rokach, 2010). This approach provides a robust method for accurately identifying systemic risk under dynamic market conditions.
+
+    When measuring systemic risk in the financial system, the choice of weights used to aggregate results across financial institutions is critical. Traditional systemic risk indices, such as CES and SRISK, estimate the overall risk of the financial system by simply summing the systemic risk measures of individual institutions, without considering the network interconnections within the system (H\"ardle et al., 2016; van de Leur et al., 2017). While numerous network-based studies have confirmed the significant impact of inter-institutional risk spillover effects on systemic risk (Billio et al., 2012; Diebold and Y{\i}lmaz, 2014; H\"ardle et al., 2016), most focus on the direction of connectedness. Research on incorporating these spillover effects into systemic risk measurement remains limited.
+
+    From an economic perspective, most prevailing systemic risk measures rely on the effectiveness of capital markets. Given the specificity of the Chinese stock market, such as the short-selling constraints and the dominance of retail investors (Leippold et al., 2022), it is necessary to evaluate whether these measures can effectively measure China's systemic risk. For example, Huang et al. (2019) and Pham et al. (2021) questioned the effectiveness of the SRISK in the Chinese market, arguing that it fails to accurately measure systemic risk in China. Taking SRISK as an example, we illustrate why conventional systemic risk measures may perform badly in the Chinese market. That is, traditional econometric models struggle to capture the nonlinear characteristics of systemic risk in rapidly changing market conditions, and tend to overlook the risk spillover effects among financial institutions when estimating the overall risk of the financial system.
+
+    To address the limitation of prevailing systemic risk measures, we develop a new risk measure, i.e., ESRISK, by incorporating machine learning with risk spillover networks. Empirical results demonstrate that ESRISK can more accurately reflect systemic risk in China. We further compare the performance of various systemic risk measures by a series of tests, including the nonlinear Granger causality tests (Diks and Panchenko, 2006), prediction of the Baidu Index (Yu et al., 2023; Liu and Pun, 2022), and GSADF tests (Phillips et al., 2015). Test results indicate that ESRISK significantly outperforms other competitors across all three tests, demonstrating superior predictability and risk identification power. Additionally, we find that ESRISK has significant predictive power for macroeconomic downturns.
+
+    The main contribution of this paper is the development of a new systemic risk measure, i.e., ESRISK, which takes advantage of both machine learning and risk spillover networks. ESRISK addresses the limitations of prevailing systemic risk measures, particularly the challenge of handling nonlinearities and characterizing network interdependence. First, to provide a more reliable systemic risk measure, this study pioneers in analyzing the reasons behind the bad performance of SRISK in the Chinese context, moving beyond merely raising partial doubts (Huang et al., 2019; Pham et al., 2021). Second, rather than relying on a single machine learning method like Liu and Pun (2022), we leverage the robust generalization and complex feature-recognition capabilities of ensemble learning to accurately capture the nonlinearity of systemic risk during periods of rapid change. The horse race results demonstrate the superior predictive power of the ensemble measure. Third, instead of aggregating MES using capital shortfalls like SRISK, we weight ensemble-learning-enhanced MES (ELE-MES) by the market capitalization and risk spillover index of institutions, addressing the shortcoming of many systemic risk measures that the network interdependence among institutions is barely reflected. Finally, extensive testing shows that the proposed measure, i.e., ESRISK, significantly outperforms traditional measures in forecasting systemic risk and identifying risk events. This study extends the boundaries of systemic risk research amid the rise of AI, offering a new solution for effectively monitoring systemic risk.
+
+    The remainder of this paper is organized as follows. Section 2 evaluates the applicability of SRISK in the Chinese market. Section 3 introduces the methodology for constructing ESRISK and comparative analyses. Section 4 describes variable selection and data. Section 5 discusses the empirical results and Section 6 concludes the paper.
+
+    \section{Why does SRISK perform badly in China?}
+
+    The core concept of SRISK (Brownlees and Engle, 2017) is to quantify the systemic risk faced by institutions due to capital shortfalls. Specifically, the capital shortfall of financial institution $i$ at time $t$, $CS_{i,t}$, is defined as follows:
+
+    \[
+    CS_{i,t} = kA_{i,t} - W_{i,t} =  k(D_{i,t} + W_{i,t}) - W_{i,t} \quad (1)
+    \]
+
+    where $W_{i,t}$ is the market value of the equity, $D_{i,t}$ is the book value of the debt, $A_{i,t}$ is the quasi value of the asset, and $k$ is the capital adequacy ratio (usually set at $8\%$). The capital shortfall of financial institutions can be viewed as the negative of the working capital of the firm, a negative capital shortfall means the financial institutions are operating normally; otherwise, it means that the financial institutions are in distress. The SRISK of financial institution $i$ at time $t$ is defined as the expected capital shortfall of a financial institution facing systemic risk:
+
+    \[
+    SRISK_{i,t} = \mathbb{E}_t\big(CS_{i,t+1}\big|SE_{t+1:t+h}\big) = W_{i,t}\big[kLVG_{i,t} + (1-k)MES_{i,t} - 1\big] \quad (2)
+    \]
+
+    where $SE_{t+1:t+h} = \{R_{m,t+1:t+h}< C\}$ indicates the occurrence of a systemic risk event, $R_{m,t+1:t+h}$ is the market return over the period $t+1$ to $t+h$, and $C$ is the threshold. $SRISK_{i,t}$ can be aggregated to measure the systemic risk of the entire market:
+
+    \[
+    SRISK_{t} = \sum_{i=1}^{N}\left(SRISK_{i,t}\right)_{+} \quad (3)
+    \]
+
+    where $x_{+}$ denotes $\max(x,0)$, reflecting the observation that during the financial crisis, even institutions with excess capital were often unwilling to rescue those on the verge of failure.
+
+    In this paper, we set the forecast period $h$ to one week (i.e., 5 trading days), and the corresponding threshold $C$ to $-2.5\%$. Using a weekly frequency provides a more timely reflection of market conditions compared with a monthly frequency, enabling the issuance of early warnings (Liu and Pun, 2022). $LVG_{i,t} = (D_{i,t} + W_{i,t}) / W_{i,t}$ represents the quasi-leverage ratio. Marginal expected shortfall (MES), $MES_{i,t}$, is the expectation of the firm equity multiperiod arithmetic return conditional on the systemic event. We employ the mainstream GARCH-DCC model to estimate $MES_{i,t}$.
+
+    To investigate the reasons behind the bad performance of SRISK, we transform Eq. (2) as follows:
+
+    \[
+    \begin{aligned}
+    SRISK_{i,t} &= W_{i,t}\big[kLVG_{i,t} + (1-k)MES_{i,t} - 1\big] \\
+    &= kD_{i,t} - (1-k)W_{i,t}(1 - MES_{i,t})
+    \end{aligned} \quad (4)
+    \]
+
+    where the capital adequacy ratio, $k$, is time-invariant, and the debt value, $D_{i,t}$, remains essentially constant in the short term. This implies that changes in SRISK are entirely determined by the term $W_{i,t}(1 - MES_{i,t})$. Assuming the total number of shares remains unchanged, the change in the market value of the institution $W_{i,t}$ corresponds to the change in its stock price. According to Eq. (4), SRISK is inversely proportional to the stock price increase and directly proportional to MES. Thus, changes in $SRISK_{i,t}$ depend on the relative magnitude of changes in $W_{i,t}$ and $MES_{i,t}$. Mathematically, this relationship can be expressed as:
+
+    \[
+    \begin{aligned}
+    \Delta SRISK_{i,t} &= SRISK_{i,t} - SRISK_{i,t-1} \\
+    &= (k-1)\big[W_{i,t}(1-MES_{i,t}) - W_{i,t-1}(1-MES_{i,t-1})\big]
+    \end{aligned} \quad (5)
+    \]
+
+    Since $k-1<0$, if $\Delta SRISK_{i,t}<0$, the relationship between $MES_{i,t}$ and $W_{i,t}$ satisfy:
+
+    \[
+    \frac{1 - MES_{i,t-1}}{1 - MES_{i,t}} < \frac{W_{i,t}}{W_{i,t-1}} \quad (6)
+    \]
+
+    The above situation arises from the high proportion of retail investors and high turnover rates in China's investor structure, which contributes to significant boom-and-bust cycles in the stock market (Jones et al., 2023). During the "Leverage Bull" period in the first half of 2015, stock prices, including financial institutions, surged sharply, leading to a rapid accumulation of risk. MES calculated using traditional methods struggled to accurately capture the nonlinear characteristics of systemic risk during such rapidly changing conditions, failing to promptly reflect actual risk levels and underestimating institutions' expected losses. Meanwhile, the rise in stock prices led to a significant increase in the market value of institutions' equity $W_{i,t}$, substantially overestimating their risk resilience. This mismatch led to the situation described in Inequality (6), where SRISK declined instead of increasing.
+
+    In brief, we argue that the SRISK measure fails in China for the following two reasons: (1) The MES calculated using traditional measures cannot accurately assess the actual level of risk in China; (2) Due to the specificity of the Chinese stock market, such as short-sales constraints and the dominance of retail investors (Leippold et al., 2022), measuring overall market risk by simply summing up the capital shortfalls across financial institutions may be implausible. When an institution's market value deviates from its fundamental value due to an irrational surge in stock prices, using market capitalization to measure its capital reserves significantly overestimates its risk resilience, making it difficult to accurately assess its actual risk level. Furthermore, when evaluating overall market risk, SRISK aggregates the capital shortfalls of individual institutions but fails to account for the risk spillover between them.
+%fsfdsada
+    \section{Methodology}
+
+    \subsection{Construction of ESRISK}
+
+    To address the limitations of conventional systemic risk measures, we propose a hybrid approach: we first apply ensemble learning to estimate institution-level MES. Then, we use variance decomposition to capture risk spillover effects among financial institutions. Finally, we aggregate institution-level MES, weighted by risk spillover and market capitalization. This approach integrates the absolute level of systemic risk, institutional size, and the network structure of the financial system, resulting in a comprehensive systemic risk measure. The construction of ESRISK consists of four phases as follows:
+
+    \subsubsection{Phase 1. Define systemic events with VaR}
+
+    Let $M_{m,t} \in \mathbb{R}^{p}$ denote the macroeconomic variable at time $t$, and the market return can be expressed as:
+
+    \[
+    R_{m,t+1:t+h} = f_{m}(M_{m,t}) + \epsilon_{m,t+1:t+h} \quad (7)
+    \]
+
+    where $f_{m}(\cdot)$ is a map from $\mathbb{R}^{p}$ to $\mathbb{R}$, $Q_{\alpha}(R_{m,t+1:t+h}|M_{m,t}) = 0$, $Q_{\alpha}(Z)$ is the $\alpha$th quantile of $Z$ satisfying $P(Z\leq Q_{\alpha}(Z)) = \alpha$. Let $\rho_{\alpha}(u) = u(\alpha - I_{[u\leq 0]})$, with $I_{A}$ being the indicator function of the event $A$. Then we fit the function $f_{m}(\cdot)$ using the following formula:
+
+    \[
+    \widehat{f}_{m,t}(\cdot) = \underset {f_{m}(\cdot)}{\arg\min}\frac{1}{T}\sum_{i=1}^{t-h}\rho_{\alpha}\Big(R_{m,i+1:i+h} - f_{m}(M_{m,i})\Big) \quad (8)
+    \]
+
+    Therefore,
+
+    \[
+    \widehat{VaR}_{m,t+1:t+h}^{\alpha} = \widehat{f}_{m,t}(M_{m,t}) \quad (9)
+    \]
+
+    We use linear models, such as $f_{m}(M_{m,t}) = \beta_{0}^{m} + (\beta^{m})^{\top}M_{t}^{m}$, to fit $f_{m}(\cdot)$. The systemic event is then defined as $SE_{t+1:t+h} = \{R_{m,t+1:t+h} = \widehat{VaR}_{m,t+1:t+h}^{\alpha}\}$.
+
+    \subsubsection{Phase 2. Estimate institution-level MES with ensemble learning}
+
+    The estimation of MES using machine learning methods can be framed as a supervised learning process, represented as $X \to f(\cdot) \to Y$, where $X$ and $Y$ denote the input and output variables, respectively, and $f(\cdot)$ represents the unknown function to be determined. More specifically,
+
+    \[
+    (R_{i,t},R_{m,t+1:t+h},R_{m,t},M_{m,t},C_{i,t}) \to f(\cdot) \to R_{i,t+1:t+h}, \quad i=1,2,\dots,N \quad (10)
+    \]
+
+    where $C_{i,t}$ denotes the characteristic variable of company $i$.
+
+    Following Gu et al. (2020) and Liu and Pun (2022), we selected six mainstream machine learning algorithms: Random Forest, Ridge Regression, Elastic Net (E-NET), Partial Least Squares (PLS), Artificial Neural Networks (ANN), and Long Short-Term Memory (LSTM). Once the models are trained, MES is estimated using Eq. (11) below. Notably, the input variable $R_{m,t+1:t+h}$ is replaced by $\sqrt{\alpha}R_{m,t+1:t+h}^{s}$ when predicting MES in the actual forecast. The machine-learning-enhanced MES (MLE-MES) is defined as:
+
+    \[
+    \overline{MES}_{i,t+1:t+h}^{MLE} = -\hat{f}_{j,t}\Big(R_{i,t},\sqrt{\alpha}R_{m,t+1:t+h}^{s},R_{m,t},M_{m,t},C_{i,t}\Big) \quad (11)
+    \]
+
+    where $j\in \{RF,Ridge,ENet,\dots\}$ denotes specific machine learning algorithms.
+
+    We integrate the outputs of all machine learning algorithms to construct indicators using ensemble learning methods. Specifically,
+
+    \[
+    MES_{i,t}^{EL} = \frac{1}{10}\sum_{j\in \{RF,Ridge,\dots\}}MES_{i,t+1:t+h}^{MLE} \quad (12)
+    \]
+
+    \subsubsection{Phase 3. Estimate risk spillovers among institutions}
+
+    Consider an $N$-dimensional Covariance stationary data generation process (DGP) with orthogonal shocks: $\mathbf{x}_t = \Theta(L)\mathbf{u}_t$, $\Theta(L) = \Theta_0 + \Theta_{1}L + \Theta_{2}L^{2} + \dots$, $E(\mathbf{u}_{t}\mathbf{u}_{t}^{\prime}) = I$. Mechanically, the $H$-step generalized variance decomposition matrix $D^{H} = [d_{ij}^{H}]$ has entries:
+
+    \[
+    d_{ij}^{H} = \frac{\sigma_{jj}^{-1}\sum_{h=0}^{H-1}(\mathbf{e}_i^{\prime}\Theta_h\Sigma\mathbf{e}_j)^2}{\sum_{h=0}^{H-1}(\mathbf{e}_i^{\prime}\Theta_h\Sigma\Theta_h^{\prime}\mathbf{e}_i)} \quad (13)
+    \]
+
+    where $H$ represents the prediction period, $\mathbf{e}_i$ is a selection vector with $i$th element unity and zeros elsewhere, $\Theta_h$ is the coefficient matrix multiplying the $h$-lagged shock vector in the infinite moving-average representation of the non-orthogonalized VAR, $\Sigma$ is the covariance matrix of the shock vector in the non-orthogonalized VAR, and $\sigma_{jj}$ is the $j$th diagonal element of $\Sigma$.
+
+    Following Diebold and Yilmaz (2014), we define the risk spillover effect $C_{i,j}^{H}$ and net spillover $NC_{i,j}^{H}$ from $j$ to $i$ as
+
+    \[
+    \begin{aligned}
+    C_{i,j}^{H} &= d_{ij}^{H} \\
+    NC_{i,j}^{H} &= C_{i,j}^{H} - C_{j,i}^{H}
+    \end{aligned} \quad (14)
+    \]
+
+    Moreover, the institution $i$'s from-degree index $C_{i,\bullet}^{H}$ can be represented by the sum of the off-diagonal row, which measures the directional volatility spillovers received by institution $i$ from all other institutions. Specifically:
+
+    \[
+    C_{i,\bullet}^{H} = \sum_{j=1}^{N} d_{ij}^{H}, \quad j\neq i \quad (16)
+    \]
+
+    Finally, the total risk spillover index $C^{H}$ for financial institutions can be represented as:
+
+    \[
+    C^{H} = \frac{1}{N}\sum_{i=1}^{N}\sum_{j=1}^{N} d_{ij}^{H}, \quad i\neq j \quad (17)
+    \]
+
+    \subsubsection{Phase 4. Construction of ESRISK}
+
+    Notably, MES measures the expected loss of institution $i$ during a systemic event, while the from-degree index $C_{i,\bullet}^{H}$ captures the risk spillover effect received by institution $i$ from all other institutions. Both metrics assess an institution's exposure to systemic shocks but differ in perspective and interpretation. MES focuses on the magnitude of an institution's risk level during a systemic event. In contrast, the from-degree index evaluates the systemic importance of an institution from a network perspective, emphasizing its interconnectedness within the risk spillover network. While MES provides a straightforward measure of an institution's systemic risk level, the from-degree index highlights the role of the institution in the broader risk transmission process, offering a complementary view of systemic risk.
+
+    Therefore, we propose ESRISK by innovatively integrating the from-degree index $C_{i,\bullet}^{H}$ with ELE-MES. Specifically, we transform ELE-MES into the absolute contribution of each institution to the financial system's risk and then aggregate these results using the from-degree index as weights:
+
+    \[
+    \mathrm{ESRISK}_t = \sum_{i=1}^{n}w_{i,t}\mathrm{MES}_{i,t}^{\mathrm{ELE}}\left(\frac{C_{i,t}^{U}}{\sum_{i=1}^{n}C_{i,t}^{U}} N\right) \quad (18)
+    \]
+
+    where weight $w_{i,t} = mw_{i,t} / \sum_{i=1}^{N}mw_{i,t}$ is given by the relative market capitalization of the financial institutions, from-degree index $C_{i,t}^{U}$ is the sum of risk spillover to institution $i$ by other financial institutions at time $t$, and $\mathrm{MES}_{i,t}^{\mathrm{ELE}}$ is the ELE-MES. Notably, if the differences in systemic importance among institutions are ignored and $\frac{C_{i,t}^{U}}{\sum_{i=1}^{n}C_{i,t}^{U}}$ in Eq. (18) is replaced by $\frac{1}{n}$, the ESRISK reduces to the ensemble-learning-enhanced CES. We assign weights to institutions using the from-degree index to address the shortcomings of traditional systemic risk measures that overlook the network interconnections among institutions (van de Leur et al., 2017).
+
+    \subsection{Methods for comparative analysis}
+
+    In this paper, we consider three methods for comparing systemic risk measures: the nonlinear Granger causality test, the Baidu index fitting, and the GSADF test.
+
+    \subsubsection{Nonlinear Granger causality test}
+
+    We first assess whether an indicator is superior to others using the nonlinear Granger causality test, given the significant nonlinearities inherent in systemic risk. This test examines whether past changes in one indicator, $X_{t}$, help to explain contemporary changes in another indicator, $Y_{t}$. Specifically, we employ the nonparametric non-parametric test statistic $T_{n}$ proposed by Diks and Panchenko (2006) to assess nonlinear Granger causality. Assuming that the time series $\{X_{t}\}$ and $\{Y_{t}\}$ are strictly stationary and weakly correlated, and defining $Z_{t} = Y_{t+1}$, then
+
+    \[
+    T_{n}(t) = \frac{(n-1)}{n(n-2)}\sum_{t}\left(\hat{f}_{X,Y,Z}(X_{t},Y_{t},Z_{t})\hat{f}_{Y}(Y_{t}) - \hat{f}_{X,Y}(X_{t},Y_{t})\hat{f}_{Y,Z}(Y_{t},Z_{t})\right) \quad (19)
+    \]
+
+    Information criteria including AIC, BIC, and HQIC are selected for the test. If the null hypothesis that "X does not Granger-cause $Y$" cannot be rejected, $X$ is deemed not to be a nonlinear Granger cause of $Y$. Conversely, if the null hypothesis that "Y does not Granger-cause $X$" is rejected, this implies a unidirectional nonlinear Granger causality between the systemic risk measures $Y$ and $X$, suggesting that $Y$ is superior to $X$. If both measures Granger-cause each other, they are considered comparable, and no definitive conclusion can be drawn regarding which is superior.
+
+    \subsubsection{Prediction of the Baidu index}
+
+    Systemic risk is inherently difficult to observe directly; thus, we predict the Baidu index to assess the predictive power of systemic risk measures (Preis et al., 2013; Yu et al., 2023). The Baidu index provides search volume data for trending topics, such as systemic events, over specific periods in China, offering insights into public attitudes toward these events. Based on the Baidu index, we use a series of search terms related to the "financial crisis" as a proxy for systemic risk. Specifically, we consider six search keywords: "Bear market", "Market collapse", "Financial crisis", "Market plunge", "Limit down", "Market crash". Following Liu and Pun (2022), we regress the search volume of these keywords at time $t$ on systemic risk measures at time $t-1$ and quantify the predictive power of these indicators using the regression coefficients and adjusted $R^{2}$.
+
+    \subsubsection{GSADF test}
+
+    To compare the performance in identifying systemic events ex-ante, we use the GSADF test proposed by Phillips et al. (2015), originally designed to detect "bubbles" in asset price series. Consider a rolling window ADF with window interval $[r_1, r_2]$, where $r_1$ and $r_2$ correspond to the first $r_1\%$ and $r_2\%$ of the entire sample, respectively. The regression model is formulated as:
+
+    \[
+\Delta y_{t}=\hat{a}_{r_1,r_2}+\hat{\beta}_{r_1,r_2}y_{t-1}+\sum_{i=1}^{k}\hat{\psi}_{r_1,r_2}^{i}\Delta y_{t-i}+\hat{\epsilon}_{t}\quad(20)
+\]
+
+    The corresponding GSADF test statistic is defined as:
+
+    \[
+    GSADF(r_0) = \underset {r_2< \| \mathbf{R}_2 - \mathbf{r}_0\|}{\sup}\left\{ADF_{r_1}^{r_2}\right\}
+    \]
+
+    where $ADF_{r_1}^{r_2}$ is the ADF statistic (t-value) based on the above regression model, and $r_0$ denotes the minimum window width of the regression.
+
+    \section{Data}
+
+    Our empirical analysis focuses on a panel of representative Chinese financial institutions selected based on the Guidelines on Industry Classification of Listed Companies issued by the China Securities Regulatory Commission. As of March 31, 2022, 107 listed companies were categorized under banking (J66), securities (J67), and insurance (J68). Since many financial institutions in China were listed relatively late, we applied the following screening criteria to ensure a sufficient sample size and number of institutions during the training period: (1) listed before January 1, 2011; (2) not classified as ST companies; (3) achieved a certain market capitalization, ensuring strong representativeness within their respective industries. The final sample comprises 36 listed financial institutions, including 16 banks, 16 securities companies, and 4 insurance companies. The return series for individual financial institutions and the overall market are represented by the daily logarithmic returns of each institution and the SSE Index, respectively.
+
+    Following Liu and Pun (2022), the macro-economic variables $M_{m,t}$ used for calculating market VaR and ELE-MES are listed in Table 1, including market volatility, short-term TED spread, term spread, three-month Treasury bond yield changes, USD/RMB exchange rate, China's economic policy uncertainty (EPU) index, and international oil price. Since we train the model on daily frequencies, the daily macroeconomic variable values are taken as the most recent value available on that day. EPU is taken from its official website, while all other macroeconomic variables are taken from the WIND database.
+
+    According to Gu et al. (2020), we selected commonly used firm characteristics for calculating ELE-MES, including price-to-earnings ratio, book-to-market ratio, turnover, momentum, reversal, illiquidity, idiosyncratic volatility, and beta. The descriptions of these firm characteristics are listed in Table 2. The data used to calculate firm characteristics are all from the WIND database.
+
+    ESRISK is computed at the end of each week from January 2014 to March 2022 using the extended window approach, with the length of the first estimation window spanning 3 years; therefore, all our subsequent results have no lookahead bias. Specifically, ELE-MES is predicted at each estimation point using all data available from the beginning of the period up to the estimation date. We first train the machine learning model on data from 2011 to 2013, then apply the trained $f(\cdot)$ to forecast ELE-MES for the first week of 2014. This process is repeated by expanding the data window by one week at a time. The spillover index is calculated using the rolling window approach, with the estimated window set to three years and a forecast horizon of 5 trading days.
+
+    \begin{table}[H]
+    \centering
+    \caption{Descriptions of macroeconomic variables.}
+    \begin{tabular}{ll}
+    \toprule
+    Variable & Description \\
+    \midrule
+    Market volatility & The 22-day rolling standard deviation of the market return \\
+    Short-term TED spread & Three-month SHOR rate minus three-month Treasury bill rate \\
+    Term spread change & 10-year Treasury bond yield minus three-month Treasury bill rate \\
+    3-month yield change & Change in the three-month Treasury bill rate \\
+    USD/RMB exchange rate & Daily percentage change in the USD/CNY spot exchange rate \\
+    EPU & Daily Index of China's Economic Policy Uncertainty \\
+    International oil price & Daily return on WTI Crude Oil Prices \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+    \begin{table}[H]
+    \centering
+    \caption{Descriptions of the firm characteristics.}
+    \begin{tabular}{ll}
+    \toprule
+    Variable & Description \\
+    \midrule
+    EP & Earnings/current market capitalization \\
+    BM & Book value/current market value \\
+    TO & Average turnover in the last 22 days \\
+    MOM & Cumulative return from previous t-12 to t-1 \\
+    REV & Cumulative return of the previous 22 days \\
+    Amihud & Average of the Abs (yield/turnover rate) over the previous 22 days \\
+    Beta & Regression coefficient to market returns over the past year \\
+    IVOL & The volatility of specific returns over the past year \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+    \section{Empirical results}
+
+    \subsection{ESRISK of the Chinese market}
+
+    First, market VaR is calculated to reflect real-time market risk and replace the fixed threshold used in SRISK. During systemic events such as the 2015 stock market crash, the U.S.-China trade war in 2018, and the COVID-19 pandemic in early 2020, the market VaR exhibited a rapid downward trend. This indicates that dynamic VaR can reflect changes in market risk more promptly than fixed risk thresholds.
+
+    Subsequently, we apply the expanding window approach to fit and train the model. The trained model is then used to predict the next-period MLE-MES for each financial institution, iterating sequentially through all institutions and prediction periods. We begin by comparing MLE-MES with the MES estimated using the GARCH-DCC method to preliminarily assess the advantages of machine learning methods over traditional econometric models. Since systemic risk indicators at the institutional level are not directly comparable, we follow Acharya et al. (2017) by averaging the MLE-MES (MES) across financial institutions to derive a system-level measure. The MLE-MES estimation results obtained through machine learning methods exhibit a significant upward trend during systemic events, including the 2015 stock market crash, the 2018 U.S.-China trade war, and the COVID-19 pandemic. Compared to the traditional GARCH-DCC method, the estimates derived from machine learning methods show more pronounced variations, providing a more accurate reflection of systemic risk dynamics. Additionally, the estimation results across different machine learning methods reveal significant discrepancies. This indicates that each machine learning method has a unique information processing mechanism, leading to variations in its ability to capture the characteristics of systemic risk.
+
+    After conducting a preliminary comparison, we perform a nonlinear causality test on the residuals of each indicator after linear filtering by the VAR model. The comparison results demonstrate that most machine learning methods significantly outperform the GARCH-DCC method, highlighting their superiority in capturing complex nonlinear relationships and handling high-dimensional data features.
+
+    We follow the "horse race" approach proposed by Rodriguez-Moreno and Pena (2013) to compare the predictive power of ensemble learning against various machine learning methods. The results indicate that the ensemble learning indicator achieves the highest score in the horse race, demonstrating its superior forward-looking ability in systemic risk identification compared to other single-algorithm indicators. Consequently, we adopt the ensemble learning indicator, $\mathrm{MES}^{EL}$ as the final estimation result for ELE-MES and use it to construct the overall systemic risk measure for the financial system, ESRISK.
+
+    The total risk spillover index began to rise significantly at the end of 2014, coinciding with the onset of the "Leverage Bull". Over the following year, the market experienced rapid surges and crashes, and the total risk spillover index continued to rise until mid-2016. Similarly, during the 2018 U.S.-China trade war, the total risk spillover index exhibited a comparable significant upward trend. Notably, while the total risk spillover index showed an evident upward trend during systemic events, it often lagged behind market movements, making it difficult to accurately measure systemic risk or provide forward-looking warnings.
+
+    We further examine the risk spillover effects during past systemic risk events in China to validate the rationale for incorporating the risk spillover index into systemic risk measurement. The net risk spillover effect within the securities sector is significantly higher than that between the banking and insurance sectors during the overall period. Although the size of financial institutions in the securities sector is much smaller than that of the banking and insurance sectors, their importance within the network cannot be ignored. This also reflects the shift in systemic risk supervision from "too-big-to-fail" to "too-connected-to-fail". The spillover effects among financial institutions are more pronounced during periods of systemic events. In contrast, traditional systemic risk measures primarily focus on the contribution of individual financial institutions to overall systemic risk, neglecting the spillover effects between institutions.
+
+    We further discuss the necessity of incorporating risk spillover effects into systemic risk measurement at the individual institution level. The rankings reveal that the top five institutions in terms of risk spillover are all securities firms, whereas the top five institutions by size are all banks and insurance companies. This contrast highlights the divergence between the regulatory paradigms of "too-connected-to-fail" and "too-big-to-fail". As financial institutions become increasingly interconnected, the role of securities firms in the financial market continues to grow, despite their relatively small market capitalizations. Non-bank financial crises frequently serve as primary triggers for systemic crises. Therefore, incorporating risk spillover effects into systemic risk measurement is essential for accurately capturing the interconnected nature of financial systems and mitigating systemic risks.
+
+    We combine institutions' ELE-MES with the from-degree index to establish the overall systemic risk measure, i.e., ESRISK. The results show that ESRISK accurately measures the systemic risk in China. First, from a holistic temporal standpoint, following the implementation of China's deleveraging policy in response to the 2015 stock market crash, systemic risk has exhibited stability and a decreasing trend, consistently maintained at a low level. Second, prior to systemic events such as China's stock market crash in 2015, the U.S.-China trade war in 2018, and the COVID-19 pandemic in early 2020, ESRISK was at a relatively high level, providing forward-looking early warning for the outbreak of systemic events. In contrast, the systemic risk level measured by the SRISK has shown a gradual upward trend but remained relatively low prior to the onset of systemic events.
+
+    \subsection{Comparative analysis of systemic risk measures}
+
+    \subsubsection{Results of nonlinear granger causality test}
+
+    We first examine the Granger causality relationship between ESRISK and traditional systemic risk indicators using the nonlinear Granger causality test. To ensure a comprehensive comparison, we selected seven widely used systemic risk indicators as benchmarks, including MES, CES, SRISK, CoVaR, $\Delta$ CoVaR, CAViaR, and CATFIN. Under all three criteria, the null hypothesis that "ESRISK does not Granger-cause traditional systemic risk indicator" is rejected at the $1\%$ confidence level in most cases, whereas the null hypothesis that "Traditional systemic risk indicator does not Granger-cause ESRISK" cannot be rejected at the $1\%$ confidence level. This indicates a unidirectional Granger causality relationship between ESRISK and traditional indicators, suggesting that ESRISK has more predictive power compared to other traditional indicators.
+
+    \subsubsection{Results of predicting Baidu index}
+
+    Secondly, we perform a comparative analysis of the predictive power of ESRISK and traditional systemic risk indicators. The results reveal that, whether for individual keyword regressions or the comprehensive search index, the t-value and adjusted $R^2$ for ESRISK are significantly higher than those for traditional systemic risk indicators, indicating that ESRISK has stronger predictive power for systemic risk.
+
+    \subsubsection{Results of GSADF test}
+
+    Finally, we evaluate the risk identification ability of all systemic risk measures using the GSADF method. The warning signals issued by ESRISK successfully predicted several systemic events:
+
+    The 2015 Stock Market Crash. ESRISK issued an early warning at the end of 2014, which coincided with the beginning of the "Leverage Bull" market. This period saw the emergence of high-leverage investment activities, such as off-market financing, which propelled the stock market into an irrational phase of rapid growth. In July 2015, the GSADF statistic again exceeded the critical value, prompting ESRISK to issue another warning signal. During July, the SSE Index plunged by over 600 points, representing a $14.34\%$ decline. The market subsequently entered a phase of heightened volatility and panic, as investors' risk aversion rapidly intensified, leading to widespread sell-offs that further deepened the downward trend.
+
+    The U.S.-China Trade War. The GSADF statistic issued a warning signal in early February 2018. At the beginning of 2018, U.S. President Trump announced a series of tariff increases, initially targeting steel and aluminum products and later expanding to a wide range of goods, including electronics and machinery. In response to the U.S. trade measures, China implemented corresponding countermeasures, imposing retaliatory tariffs on U.S. imports such as soybeans, automobiles, and chemicals. The escalating trade war heightened investors' concerns about the economic outlook, leading to widespread pessimism in the market. The SSE Index fell continuously from the beginning of the year, dropping over $25\%$ by October and entering a definitive bear market.
+
+    The COVID-19 pandemic. In the early stages of the pandemic, investor panic was amplified by information asymmetry. The GSADF statistic began to rise rapidly at the end of January and issued a warning signal in mid-February, indicating an excessive market downturn. On the first trading day after the 2020 Chinese New Year holiday, the SSE Index dropped by over $7\%$, marking the largest single-day drop since 2015, with over 3000 stocks hitting their daily limit. Following the swift implementation of control measures by the Chinese government, the pandemic was effectively contained. Investors soon realized that the economic impact of the pandemic was limited, leading to improved market sentiment. By the end of February, the SSE Index had rebounded to pre-outbreak levels. However, in March, the rapid global spread of the pandemic triggered renewed market volatility, resulting in liquidity crises in capital markets worldwide. The global sell-off significantly impacted the SSE Index, causing another sharp decline.
+
+    \subsection{Comparative analysis of macroeconomic downturn forecasting capabilities}
+
+    Previous studies have shown that an increase in the level of systemic risk suppresses corporate investment activities, reduces household consumption, and generates negative spillover effects on the real economy (Allen et al., 2012; Giglio et al., 2016; Brownlees and Engle, 2017). In light of this, we further examine the predictive power of ESRISK for macroeconomic downturns. Therefore, we use the China Business Confidence Index (CBCI) as a proxy for China's aggregate economy. Following Allen et al. (2012), we estimate the following n-month-ahead multivariate predictive regressions of CBCI on systemic risk indicators after controlling the relevant macroeconomic variables as well as one-month to twelve-month lags of the CBCI:
+
+    \[
+    \mathrm{CBCI}_{t+n} = a + \gamma \mathrm{INDEX}_t + \beta X_t + \sum_{i=1}^{12}\lambda_i\mathrm{CBCI}_{t-i+1} + \epsilon_{t+n} \quad (22)
+    \]
+
+    where CBCI measures China's macroeconomic prosperity, $X_{t}$ represents the relevant macroeconomic control variables, which include the RMB effective exchange rate, consumption, investment, and fiscal balance. INDEX represents ESRISK as well as other traditional systemic risk indicators. The coefficients for ESRISK lagged 1-6 periods are all significantly negative, indicating that the ESRISK has strong predictive power for macroeconomic downturns. In contrast, most traditional systemic risk indicators exhibit less significant or insignificant regression coefficients. To further test whether ESRISK provides additional predictive power beyond traditional systemic risk indicators, after controlling for traditional indicators, ESRISK still significantly and negatively predicts future macroeconomic indicators, while all traditional systemic risk indicators lose their predictive power. These results demonstrate that ESRISK introduced in this paper can effectively predict macroeconomic downturns and offers additional predictive power compared to traditional systemic risk measures.
+
+    \section{Conclusions}
+
+    We empirically analyze why SRISK performs badly in the Chinese market. Building on this, we propose a new systemic risk measure, namely, ESRISK, which utilizes machine learning methods to identify optimal models guided by high-dimensional data, enabling the dynamic detection of the nonlinear structures of systemic risk across varying risk environments. Additionally, the incorporation of risk spillovers allows ESRISK to capture the contagion relationships between financial institutions. We conduct a comparative analysis to highlight the advantages of ESRISK over traditional systemic risk measures in terms of forward-looking capabilities, predictive accuracy for systemic risk, and the identification of risk events. Lastly, we compare ESRISK with other measures in predicting macroeconomic downturns, which again demonstrates the superiority of ESRISK.
+
+    The findings of this paper have significant policy implications. First, differences in market conditions may invalidate prevailing systemic risk measures such as SRISK. Emerging markets require more customized systemic risk measures, which can reflect markets specific characteristics. Using tailored systemic risk measures, policymakers can achieve a more accurate understanding of potential vulnerabilities and design more effective preventive policies.
+
+    Second, to measure systemic risk, high-dimensional data and complex nonlinear relationships require more powerful modeling techniques. Policymakers should be aware of the potential of big data and machine learning to enhance systemic risk monitoring. By integrating diverse datasets, machine learning-based measures can dynamically capture the nonlinearity of systemic risk, enabling more accurate risk identification and timely early-warning signals—even under dynamic and complex market conditions.
+
+    Third, the superiority of ESRISK over traditional measures underscores the importance of incorporating financial system network interconnections to improve systemic risk prediction. The overall risk level of the financial system is influenced jointly by the risk levels of individual institutions and the characteristics of their network interconnections. Effective systemic risk policies should therefore consider both the risk levels of individual institutions and the interconnected structure of the financial system. Monitoring the systemically important of individual institutions should be accompanied by ongoing assessments of how these institutions interact and transmit risks through the network. By doing so, regulators can better bolster the resilience and stability of the entire financial system.
+
+    \end{document}

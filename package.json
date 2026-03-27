@@ -1,13 +1,14 @@
 {
-  "name": "mathlive-sync",
-  "displayName": "MathLive Markdown Sync",
-  "description": "A real-time, immersive MathLive LaTeX preview and editor for Markdown.",
-  "version": "0.0.4",
+  "name": "latex-markdown-preview",
+  "displayName": "Academic Paper Panorama (论文全景预览)",
+  "description": "实时渲染、丝滑缩放的 Markdown & LaTeX 学术论文全景预览与编辑工具。",
+  "version": "1.0.0",
   "publisher": "okok909090",
+  "icon": "icon.png",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/mathlive-sync"
+    "url": "https://github.com/yourusername/academic-paper-preview"
   },
   "engines": {
     "vscode": "^1.80.0"
@@ -18,14 +19,15 @@
     "Education"
   ],
   "activationEvents": [
-    "onLanguage:markdown"
+    "onLanguage:markdown",
+    "onLanguage:latex"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "mathlive-sync.helloWorld",
-        "title": "Open MathLive Preview"
+        "title": "Open Paper Panorama (打开论文预览)"
       }
     ]
   },
