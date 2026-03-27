@@ -178,4 +178,7 @@ This project is open-source on GitHub. Feel free to submit an **Issue** or **Pul
 > 🏷️ **Tags:**  LaTeX, Math Formula，Markdown
 ## 📈 Star History (星标增长图)
 
-[![Star History Chart](https://api.star-history.com/svg?repos=qqqqqqqqq1122/latex-markdown-preview-see-quikly&type=Date)](https://star-history.com/#qqqqqqqqq1122/latex-markdown-preview-see-quikly&Date)
+
+<a href="https://star-history.com/#qqqqqqqqq1122/latex-markdown-preview-see-quikly&Date">
+  <img src="https://api.star-history.com/svg?repos=qqqqqqqqq1122/latex-markdown-preview-see-quikly&type=Date" alt="Star History Chart">
+</a>
