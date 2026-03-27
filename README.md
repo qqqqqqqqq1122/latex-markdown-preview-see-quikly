@@ -73,8 +73,16 @@ $$...$$` -\> 渲染为居中的独立编辑块，支持多行美化。
 -----
 
 > **💡 小贴士**:
-> 如果你在编写复杂的 GNN 论文（涉及大量矩阵运算和图神经网络公式），建议开启右侧预览。本插件的“公式回写”功能会帮你处理所有的反斜杠转义和格式缩进，你只需要专注于公式本身的数学逻辑。
+> 如果你在编写复杂的 学术 论文（涉及大量矩阵运算和图神经网络公式），建议开启右侧预览。本插件的“公式回写”功能会帮你处理所有的反斜杠转义和格式缩进，你只需要专注于公式本身的数学逻辑。
+---
 
+## 开源与支持 / Open Source & Support
+
+本项目已在 GitHub 开源，欢迎提交 Issue 或 Pull Request 来帮助改进它！如果你觉得这个插件好用，请给一个 **Star** ⭐。
+
+🔗 **GitHub 仓库**: [qqqqqqqqq1122/latex-markdown-preview-see-quikly](https://github.com/qqqqqqqqq1122/latex-markdown-preview-see-quikly)
+
+---
 -----
 
 **希望这个 README 能帮助你更好地展示和使用你的插件！如果需要增加特定的安装步骤（如 npm install 等），请告诉我。**
@@ -155,3 +163,15 @@ $$...$$` -> Rendered as centered, independent editing blocks, supporting multi-l
 -----
 
 **I hope this README helps you better showcase and utilize your plugin! If you need to add specific installation steps (such as npm install, etc.), please let me know.**
+
+---
+
+## Open Source & Support / 开源与支持
+
+This project is open-source on GitHub. Feel free to submit an **Issue** or **Pull Request** to help us improve! If you find this extension helpful, please give it a **Star** ⭐.
+
+本项目已在 GitHub 开源，欢迎提交 Issue 或 Pull Request 来帮助改进！如果你觉得这个插件好用，请给一个 **Star** ⭐。
+
+🔗 **GitHub Repository**: [qqqqqqqqq1122/latex-markdown-preview-see-quikly](https://github.com/qqqqqqqqq1122/latex-markdown-preview-see-quikly)
+
+---
