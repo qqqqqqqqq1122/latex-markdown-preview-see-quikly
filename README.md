@@ -1,7 +1,7 @@
 # MathLive Markdown and LaTeX Sync
 ## 👁️ 访客统计 / Visitors
 
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fqqqqqqqqq1122%2Flatex-markdown-preview-see-quikly&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=views&edge_flat=false)](https://hits.seeyoufarm.com)
+![Views](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fqqqqqqqqq1122%2Flatex-markdown-preview-see-quikly&count_bg=%23FFFFFF&title_bg=%23FFFFFF&icon=&icon_color=%23000000&title=Views&edge_flat=true)
 这是一个沉浸式的 Markdown and LaTeX(latex仅支持右边预览左边编辑) 数学公式双向编辑与实时预览插件。
 
 这份代码实现了一个功能非常强大的 VS Code 扩展，名为 **MathLive Sync**。它不仅是一个简单的 Markdown and LaTeX(latex仅支持右边预览左边编辑) 预览器，更像是一个**双向同步的公式编辑器**。
